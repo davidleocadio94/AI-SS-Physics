@@ -1,0 +1,58 @@
+#!/bin/bash -l
+# Standard output and error:
+#SBATCH -o ./tjob.out.%j
+#SBATCH -e ./tjob.err.%j
+# Initial working directory:
+#SBATCH -D ./
+#
+#SBATCH -J 100AtRand
+#
+# Node feature:
+#SBATCH --constraint="gpu"
+# Specify type and number of GPUs to use:
+#   GPU type can be v100 or rtx5000
+#SBATCH --gres=gpu:v100:2         # If using both GPUs of a node
+# #SBATCH --mem=92500             # Memory is necessary if using only 1 GPU
+#
+# Number of nodes and MPI tasks per node:
+#SBATCH --nodes=1
+#SBATCH --ntasks-per-node=40      # If using both GPUs of a node
+# #SBATCH --ntasks-per-node=20    # If using only 1 GPU of a shared node
+#
+#SBATCH --mail-type=none
+#SBATCH --mail-user=userid@example.mpg.de
+#
+# wall clock limit:
+#SBATCH --time=23:30:00
+##SBATCH --qos=3d
+
+module purge
+
+#module load intel/21.3.0
+#module load impi/2021.3
+#module load mkl/2021.3
+#module load cuda/11.2
+#module load cudnn/8.2.1
+#module load git/2.31
+#module load anaconda/3/2021.05
+#module load gcc/11
+#module load cmake/3.13
+#module load pytorch/gpu-cuda-11.2/1.10.0
+
+
+#echo “Ab” 1>&2
+#echo “Bb” 1>&2
+module load intel/18.0.5
+#echo “Cb” 1>&2
+module load impi/2018.4
+#echo “Db” 1>&2
+module load mkl/2018.4
+#echo “Eb” 1>&2
+module load cuda/10.2
+module load anaconda/3/2020.02
+module load pytorch/gpu-cuda-10.2/1.8.0
+
+
+#nequip-train tutorial.yaml
+python TestingASEMD.py > prog.out
+#vibes run singlepoint aims.in &> log.aims
